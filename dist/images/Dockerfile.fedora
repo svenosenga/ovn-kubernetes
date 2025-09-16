@@ -125,7 +125,7 @@ RUN INSTALL_PKGS=" \
     libpcap hostname kubernetes-client util-linux \
     ovn ovn-central ovn-host python3-openvswitch tcpdump openvswitch-test python3-pyOpenSSL \
     iptables nftables iproute iputils strace socat \
-    libreswan openvswitch-ipsec \
+    libreswan openvswitch-ipsec ethtool\
     " && \
     dnf install --best --refresh -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     dnf clean all && rm -rf /var/cache/dnf/*
@@ -149,17 +149,12 @@ COPY ovndb-raft-functions.sh /root/
 # copy git commit number into image
 COPY git_info /root
 
-# iptables wrappers
-COPY ./iptables-scripts/iptables /usr/sbin/
-COPY ./iptables-scripts/iptables-save /usr/sbin/
-COPY ./iptables-scripts/iptables-restore /usr/sbin/
-COPY ./iptables-scripts/ip6tables /usr/sbin/
-COPY ./iptables-scripts/ip6tables-save /usr/sbin/
-COPY ./iptables-scripts/ip6tables-restore /usr/sbin/
-
 LABEL io.k8s.display-name="ovn-kubernetes" \
       io.k8s.description="This is a Kubernetes network plugin that provides an overlay network using OVN." \
       maintainer="Tim Rozet <trozet@redhat.com>"
 
 WORKDIR /root
 ENTRYPOINT /root/ovnkube.sh
+
+RUN rm -rf /usr/sbin/iptables* && rm -rf /usr/sbin/ip6tables*
+RUN apt update && apt -fy install iptables ethtool
