@@ -155,6 +155,3 @@ LABEL io.k8s.display-name="ovn-kubernetes" \
 
 WORKDIR /root
 ENTRYPOINT /root/ovnkube.sh
-
-RUN rm -rf /usr/sbin/iptables* && rm -rf /usr/sbin/ip6tables*
-RUN apt update && apt -fy install iptables ethtool
