@@ -10,7 +10,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io 
-  OWNER: ovn-kubernetes
+  OWNER: svenosenga
   REPOSITORY: ovn-kubernetes
   FEDORA_IMAGE_NAME: ovn-kube-fedora
   UBUNTU_IMAGE_NAME: ovn-kube-ubuntu
